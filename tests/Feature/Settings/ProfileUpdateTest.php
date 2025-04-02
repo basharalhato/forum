@@ -3,7 +3,7 @@
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
-uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(\Illuminate\Foundation\Testing\LazilyRefreshDatabase::class);
 
 test('profile page is displayed', function () {
     $user = User::factory()->create();
