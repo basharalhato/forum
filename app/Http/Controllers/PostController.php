@@ -12,7 +12,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        return inertia('posts/Index', [
+            'posts' => Post::all(),
+        ]);
     }
 
     /**
