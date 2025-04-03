@@ -31,22 +31,24 @@ const props = withDefaults(defineProps<Props>(), {
 const page = usePage<SharedData>();
 const user = computed(() => page.props.auth.user as User);
 
-const isCurrentRoute = computed(() => (url: string) => page.url === url);
+const isCurrentRoute = computed(() => (component: string) => page.component === component);
 
 const activeItemStyles = computed(
-    () => (url: string) => (isCurrentRoute.value(url) ? 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100' : ''),
+    () => (component: string) => (isCurrentRoute.value(component) ? 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100' : ''),
 );
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: '/',
+        component: 'Dashboard',
         icon: LayoutGrid,
         when:!!user.value,
     },
     {
         title: 'Posts',
         href: '/posts',
+        component: 'posts/Index',
         icon: Newspaper,
     },
 ];
@@ -106,7 +108,7 @@ const mainNavItems: NavItem[] = [
                                     </NavigationMenuLink>
                                 </Link>
                                 <div
-                                    v-if="isCurrentRoute(item.href)"
+                                    v-if="isCurrentRoute(item.component)"
                                     class="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"
                                 ></div>
                             </NavigationMenuItem>

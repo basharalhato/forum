@@ -14,6 +14,7 @@ export interface BreadcrumbItem {
 export interface NavItem {
     title: string;
     href: string;
+    component: string;
     icon?: LucideIcon;
     isActive?: boolean;
     when?: boolean;
@@ -34,6 +35,29 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
+}
+
+export interface PaginatedResponse {
+    links: {
+        first: string;
+        last: string;
+        next: string | null;
+        prev: string | null;
+    }
+    meta: {
+        current_page: number;
+        per_page: number;
+        total: number;
+        from: number;
+        to: number;
+        last_page: number;
+        path: string;
+        links: {
+            url: string | null;
+            label: string;
+            active: boolean;
+        }[];
+    },
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;
