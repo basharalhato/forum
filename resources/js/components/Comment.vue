@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar/index.js';
 import { getInitials } from '../composables/useInitials.js';
