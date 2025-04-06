@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import Container from '@/components/Container.vue';
 import Heading from '@/components/Heading.vue';
+import Pagination from '@/components/Pagination.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { BreadcrumbItem } from '@/types';
+import { relativeDate } from '@/lib/utils';
+import { BreadcrumbItem, PaginatedResponse } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import { formatDistance, parseISO } from 'date-fns';
-import { computed } from 'vue';
+import Comment from "@/components/Comment.vue";
 
-const props = defineProps(['post']);
-
-const formattedDate = computed(() => formatDistance(parseISO(props.post.created_at), new Date()));
+const props = defineProps(['post', 'comments']);
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,17 +16,34 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: `/posts/${props.post.id}`,
     },
 ];
+
+const paginate: PaginatedResponse = {
+    links: props.comments.links,
+    meta: props.comments.meta,
+};
 </script>
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
         <Head :title="post.title" />
         <Container>
-            <Heading :title="post.title" :description="formattedDate + ' ago by ' + post.user.name" />
+            <Heading class="mb-6" :title="post.title" :description="relativeDate(post.created_at) + ' ago by ' + post.user.name" />
 
             <article>
                 <pre class="whitespace-pre-wrap font-sans">{{ post.body }}</pre>
             </article>
+
+            <div class="mt-12">
+                <Heading title="Comments" class="m-0" />
+
+                <ul class="mt-4 divide-y">
+                    <li v-for="comment in comments.data" :key="comment.id" class="px-2 py-4">
+                        <Comment :comment="comment" />
+                    </li>
+                </ul>
+
+                <Pagination :paginate="paginate" class="mb-6" />
+            </div>
         </Container>
     </AppLayout>
 </template>
