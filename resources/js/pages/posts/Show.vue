@@ -42,7 +42,7 @@ const paginate: PaginatedResponse = {
                     </li>
                 </ul>
 
-                <Pagination :paginate="paginate" class="mb-6" />
+                <Pagination :paginate="paginate" :only="['comments']" class="mb-6" />
             </div>
         </Container>
     </AppLayout>
