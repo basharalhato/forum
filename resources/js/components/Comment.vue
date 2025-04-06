@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar/index.js';
-import { getInitials } from '../composables/useInitials.js';
-import { relativeDate } from '../lib/utils.js';
+import { getInitials } from '@/composables/useInitials';
+import { relativeDate } from '@/lib/utils';
 
 defineProps(['comment']);
 </script>
