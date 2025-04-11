@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CommentResource;
-use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -15,7 +13,7 @@ class PostController extends Controller
     public function index()
     {
         return inertia('posts/Index', [
-            'posts' => PostResource::collection(Post::with('user')->latest()->latest('id')->paginate()),
+            'posts' => Post::with('user')->latest()->latest('id')->paginate()->toResourceCollection(),
         ]);
     }
 
@@ -43,8 +41,8 @@ class PostController extends Controller
         $post->load('user');
 
         return inertia('posts/Show', [
-            'post' => fn() => new PostResource($post),
-            'comments' => fn() => CommentResource::collection($post->comments()->with('user')->latest()->latest('id')->paginate()),
+            'post' => fn() => $post->toResource(),
+            'comments' => fn() => $post->comments()->with('user')->latest()->latest('id')->paginate()->toResourceCollection(),
         ]);
     }
 

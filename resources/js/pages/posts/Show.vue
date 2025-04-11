@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Comment from '@/components/Comment.vue';
 import Container from '@/components/Container.vue';
 import Heading from '@/components/Heading.vue';
 import Pagination from '@/components/Pagination.vue';
@@ -6,7 +7,6 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { relativeDate } from '@/lib/utils';
 import { BreadcrumbItem, PaginatedResponse } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import Comment from "@/components/Comment.vue";
 
 const props = defineProps(['post', 'comments']);
 

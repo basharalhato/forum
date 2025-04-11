@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Resources\CommentResource;
-use App\Http\Resources\PostResource;
 use App\Models\Comment;
 use App\Models\Post;
 use function Pest\Laravel\get;
@@ -19,7 +17,7 @@ it('passes a post to the view', function () {
     $post->load('user');
 
     get(route('posts.show', $post))
-        ->assertHasResource('post', new PostResource($post));
+        ->assertHasResource('post', $post->toResource());
 });
 
 it('passes comments to the view', function () {
@@ -29,5 +27,5 @@ it('passes comments to the view', function () {
     $comments->load('user');
 
     get(route('posts.show', $post))
-        ->assertHasPaginatedResource('comments', CommentResource::collection($comments->reverse()));
+        ->assertHasPaginatedResource('comments', $comments->reverse()->toResourceCollection());
 });
