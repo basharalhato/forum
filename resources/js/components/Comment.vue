@@ -4,8 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar/inde
 import { Button } from '@/components/ui/button';
 import { getInitials } from '@/composables/useInitials';
 import { relativeDate } from '@/lib/utils';
-import { router, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps(['comment']);
 
@@ -13,8 +12,6 @@ const deleteComment = () =>
     router.delete(route('comments.destroy', props.comment.id), {
         preserveScroll: true,
     });
-
-const canDelete = computed(() => props.comment.user.id === usePage().props.auth.user?.id);
 </script>
 
 <template>
@@ -33,7 +30,7 @@ const canDelete = computed(() => props.comment.user.id === usePage().props.auth.
             :description="'By ' + comment.user.name + ' ' + relativeDate(comment.created_at) + ' ago'"
         >
             <div class="mt-1">
-                <form v-if="canDelete" @submit.prevent="deleteComment">
+                <form v-if="comment.can?.delete" @submit.prevent="deleteComment">
                     <Button type="submit" class="text-sm uppercase hover:text-red-400" variant="outline">Delete</Button>
                 </form>
             </div>
