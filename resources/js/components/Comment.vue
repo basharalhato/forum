@@ -17,6 +17,6 @@ defineProps(['comment']);
                 </AvatarFallback>
             </Avatar>
         </div>
-        <HeadingSmall :title="comment.body" :description="'By ' + comment.user.name + ' ' + relativeDate(comment.created_at) + ' ago'" />
+        <HeadingSmall classes="break-all" :title="comment.body" :description="'By ' + comment.user.name + ' ' + relativeDate(comment.created_at) + ' ago'" />
     </div>
 </template>
