@@ -17,5 +17,6 @@ defineProps<Props>();
         <p v-if="description" class="text-sm text-muted-foreground">
             {{ description }}
         </p>
+        <slot />
     </header>
 </template>
