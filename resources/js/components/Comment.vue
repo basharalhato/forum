@@ -7,7 +7,7 @@ import { relativeDate } from '@/lib/utils';
 
 defineProps(['comment']);
 
-defineEmits(['delete']);
+defineEmits(['edit', 'delete']);
 </script>
 
 <template>
@@ -26,7 +26,12 @@ defineEmits(['delete']);
                 :title="comment.body"
                 :description="'By ' + comment.user.name + ' ' + relativeDate(comment.created_at) + ' ago'"
             >
-                <div class="mt-1 text-right empty:hidden">
+                <div class="mt-1 flex justify-end space-x-3 empty:hidden">
+                    <form v-if="comment.can?.update" @submit.prevent="$emit('edit', comment.id)">
+                        <Button type="submit" class="text-xs uppercase hover:font-semibold hover:text-blue-500 hover:duration-200" variant="outline">
+                            Edit
+                        </Button>
+                    </form>
                     <form v-if="comment.can?.delete" @submit.prevent="$emit('delete', comment.id)">
                         <Button type="submit" class="text-xs uppercase hover:font-semibold hover:text-red-500 hover:duration-200" variant="outline"
                             >Delete
