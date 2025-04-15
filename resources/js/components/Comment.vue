@@ -4,14 +4,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar/inde
 import { Button } from '@/components/ui/button';
 import { getInitials } from '@/composables/useInitials';
 import { relativeDate } from '@/lib/utils';
-import { router } from '@inertiajs/vue3';
 
-const props = defineProps(['comment']);
+defineProps(['comment']);
 
-const deleteComment = () =>
-    router.delete(route('comments.destroy', props.comment.id), {
-        preserveScroll: true,
-    });
+defineEmits(['delete']);
 </script>
 
 <template>
@@ -24,16 +20,20 @@ const deleteComment = () =>
                 </AvatarFallback>
             </Avatar>
         </div>
-        <HeadingSmall
-            classes="break-all"
-            :title="comment.body"
-            :description="'By ' + comment.user.name + ' ' + relativeDate(comment.created_at) + ' ago'"
-        >
-            <div class="mt-1">
-                <form v-if="comment.can?.delete" @submit.prevent="deleteComment">
-                    <Button type="submit" class="text-sm uppercase hover:text-red-400" variant="outline">Delete</Button>
-                </form>
-            </div>
-        </HeadingSmall>
+        <div class="flex-1">
+            <HeadingSmall
+                classes="break-all"
+                :title="comment.body"
+                :description="'By ' + comment.user.name + ' ' + relativeDate(comment.created_at) + ' ago'"
+            >
+                <div class="mt-1 text-right empty:hidden">
+                    <form v-if="comment.can?.delete" @submit.prevent="$emit('delete', comment.id)">
+                        <Button type="submit" class="text-xs uppercase hover:font-semibold hover:text-red-500 hover:duration-200" variant="outline"
+                            >Delete
+                        </Button>
+                    </form>
+                </div>
+            </HeadingSmall>
+        </div>
     </div>
 </template>

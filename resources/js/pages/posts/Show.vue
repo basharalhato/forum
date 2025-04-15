@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { relativeDate } from '@/lib/utils';
 import { BreadcrumbItem, PaginatedResponse } from '@/types';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 
 const props = defineProps(['post', 'comments']);
@@ -37,6 +37,11 @@ const addComment = () => {
         onSuccess: () => commentForm.reset(),
     });
 };
+
+const deleteComment = (commentId: number) =>
+    router.delete(route('comments.destroy', { comment: commentId, page: paginate.meta.current_page }), {
+        preserveScroll: true,
+    });
 </script>
 
 <template>
@@ -55,14 +60,7 @@ const addComment = () => {
                 <form v-if="$page.props.auth.user" @submit.prevent="addComment" class="mb-4">
                     <div class="mb-3 mt-4 grid w-full gap-2">
                         <Label for="body" class="sr-only">Body</Label>
-                        <Textarea
-                            id="body"
-                            rows="4"
-                            required
-                            :tabindex="1"
-                            v-model="commentForm.body"
-                            placeholder="Speed your mind Spock.."
-                        />
+                        <Textarea id="body" rows="4" required :tabindex="1" v-model="commentForm.body" placeholder="Speed your mind Spock.." />
                         <InputError :message="commentForm.errors.body" />
                     </div>
                     <Button type="submit" class="text-sm uppercase" :tabindex="2" :disabled="commentForm.processing">
@@ -73,7 +71,7 @@ const addComment = () => {
 
                 <ul class="divide-y">
                     <li v-for="comment in comments.data" :key="comment.id" class="px-2 py-4">
-                        <Comment :comment="comment" />
+                        <Comment @delete="deleteComment" :comment="comment" />
                     </li>
                 </ul>
 
