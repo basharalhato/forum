@@ -28,14 +28,14 @@ const paginate: PaginatedResponse = {
     meta: props.comments.meta,
 };
 
-const commentTextAreaRef = ref<HTMLInputElement | null>(null);
+const commentTextAreaRef = ref(null);
 const commentIdBeingEditing = ref<number | null>(null);
 const commentBeingEditing = computed(() => props.comments.data.find((comment) => comment.id === commentIdBeingEditing.value));
 
 const editComment = (commentId: number) => {
     commentIdBeingEditing.value = commentId;
     commentForm.body = commentBeingEditing.value?.body;
-    commentTextAreaRef.value?.focus();
+    commentTextAreaRef.value?.$el.focus();
 };
 
 const cancelEditComment = () => {
@@ -66,9 +66,11 @@ const updateComment = () =>
     );
 
 const deleteComment = (commentId: number) =>
-    router.delete(route('comments.destroy', { comment: commentId, page: paginate.meta.current_page }), {
+{
+    router.delete(route('comments.destroy', {comment: commentId, page: paginate.meta.current_page}), {
         preserveScroll: true,
     });
+}
 </script>
 
 <template>
@@ -87,7 +89,15 @@ const deleteComment = (commentId: number) =>
                 <form v-if="$page.props.auth.user" @submit.prevent="() => (commentIdBeingEditing ? updateComment() : addComment())" class="mb-4">
                     <div class="mb-3 mt-4 grid w-full gap-2">
                         <Label for="body" class="sr-only">Body</Label>
-                        <Textarea ref="commentTextAreaRef" id="body" rows="4" required :tabindex="1" v-model="commentForm.body" placeholder="Speed your mind Spock.." />
+                        <Textarea
+                            ref="commentTextAreaRef"
+                            id="body"
+                            rows="4"
+                            required
+                            :tabindex="1"
+                            v-model="commentForm.body"
+                            placeholder="Speed your mind Spock.."
+                        />
                         <InputError :message="commentForm.errors.body" />
                     </div>
                     <Button type="submit" class="text-sm uppercase" :disabled="commentForm.processing">
