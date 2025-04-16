@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Alert from '@/components/Alert.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar/index.js';
 import { Button } from '@/components/ui/button';
@@ -32,10 +33,17 @@ defineEmits(['edit', 'delete']);
                             Edit
                         </Button>
                     </form>
-                    <form v-if="comment.can?.delete" @submit.prevent="$emit('delete', comment.id)">
-                        <Button type="submit" class="text-xs uppercase hover:font-semibold hover:text-red-500 hover:duration-200" variant="outline"
-                            >Delete
-                        </Button>
+                    <form v-if="comment.can?.delete">
+                        <Alert
+                            title="Are you sure?"
+                            description="This will permanently delete the comment. This action cannot be undone."
+                            positive-title="Delete"
+                            :positive-action="() => $emit('delete', comment.id)"
+                        >
+                            <Button class="text-xs uppercase hover:font-semibold hover:text-red-500 hover:duration-200" variant="outline"
+                                >Delete
+                            </Button>
+                        </Alert>
                     </form>
                 </div>
             </HeadingSmall>

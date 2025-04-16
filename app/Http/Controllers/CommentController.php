@@ -26,7 +26,8 @@ class CommentController extends Controller
             'post_id' => $post->id,
         ]);
 
-        return to_route('posts.show', $post);
+        return to_route('posts.show', $post)
+            ->with('success', 'Your comment has been posted.');
     }
 
     /**
@@ -38,7 +39,8 @@ class CommentController extends Controller
 
         $comment->update($data);
 
-        return to_route('posts.show', ['post' => $comment->post_id, 'page' => $request->query('page')]);
+        return to_route('posts.show', ['post' => $comment->post_id, 'page' => $request->query('page')])
+            ->with('success', 'Comment updated.');
     }
 
     /**
@@ -48,6 +50,7 @@ class CommentController extends Controller
     {
         $comment->delete();
 
-        return to_route('posts.show', ['post' => $comment->post_id, 'page' => $request->query('page')]);
+        return to_route('posts.show', ['post' => $comment->post_id, 'page' => $request->query('page')])
+            ->with('success', 'Comment deleted.');
     }
 }
